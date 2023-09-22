@@ -1,4 +1,4 @@
-const { connect } = require('../config/db.config');
+const { connect } = require('../../config/db.config');
 const logger = require('../logger/api.logger');
 
 
@@ -9,9 +9,9 @@ class TaskRepository {
     constructor() {
         this.db = connect();
         // For Development
-        this.db.sequelize.sync({ force: true }).then(() => {
-            console.log("Drop and re-sync db.");
-        });
+        // this.db.sequelize.sync({ force: true }).then(() => {
+        //     console.log("Drop and re-sync db.");
+        // });
     }
 
     async getTasks() {

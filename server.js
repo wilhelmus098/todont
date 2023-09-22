@@ -2,9 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 
-const taskController = require('./controller/task.controller')
-
-
+const taskController = require('./src/controller/task.controller')
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,16 +13,16 @@ app.get('/api/tasks', (req, res) => {
     taskController.getTasks().then(data => res.json(data));
 });
 
-app.post('/api/task', (req, res) => {
+app.post('/api/tasks', (req, res) => {
     console.log(req.body);
     taskController.createTask(req.body.task).then(data => res.json(data));
 });
 
-app.put('/api/task', (req, res) => {
+app.put('/api/tasks', (req, res) => {
     taskController.updateTask(req.body.task).then(data => res.json(data));
 });
 
-app.delete('/api/task/:id', (req, res) => {
+app.delete('/api/tasks/:id', (req, res) => {
     taskController.deleteTask(req.params.id).then(data => res.json(data));
 });
 

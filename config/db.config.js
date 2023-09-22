@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const logger = require('../logger/api.logger');
+const logger = require('../src/logger/api.logger');
 
 const connect = () => {
 
@@ -24,7 +24,7 @@ const connect = () => {
     const db = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
-    db.tasks = require("../model/task.model")(sequelize, DataTypes, Model);
+    db.tasks = require("../src/model/task.model")(sequelize, DataTypes, Model);
 
     return db;
 
