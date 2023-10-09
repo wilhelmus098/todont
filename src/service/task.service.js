@@ -19,7 +19,6 @@ class TaskService {
     async deleteTask(taskId) {
         return await taskRepository.deleteTask(taskId);
     }
-
 }
 
 module.exports = new TaskService();
