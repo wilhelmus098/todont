@@ -1,5 +1,7 @@
 const userValidationSchema = require('../validation/user')
 const jwt = require('jsonwebtoken')
+const bcrypt = require("bcrypt")
+const saltRounds = 10
 
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization']
@@ -48,6 +50,7 @@ function generateToken(req, res, next) {
 function validateSignUp(req, res, next) {
     try {
         userValidationSchema.newUserSchema.validateSync(req.body.user)
+        req.body.user.password = req.body.user.password
         next()
     } catch (err) {
         res.status(400).json({
@@ -56,8 +59,20 @@ function validateSignUp(req, res, next) {
    }
 }
 
+async function hashPassword(req, res, next) {
+    try {
+        const hash = await bcrypt.hash(req.body.user.password, saltRounds)
+        req.body.user.password = hash
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+    next()
+}
+
 function test(req, res, next) {
     console.log('inites//////////////////////////////////////////////////////////////////////')
 }
 
-module.exports = { verifyToken, generateToken, validateSignUp, test }
+module.exports = { verifyToken, generateToken, validateSignUp, hashPassword, test }

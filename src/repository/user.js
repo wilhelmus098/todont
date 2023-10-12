@@ -24,20 +24,10 @@ class UserRepository {
     }
 
     async createUser(user) {
-        
-        console.log("inijuga bukan user")
-        console.log(user)
         let data = {};
         try {
-            // user.email = "abc@mail.com"
-            // user.username = "abc"
-            // user.password = "abcjuga"
-            // user.role = "rolee"
-            // task.createdate = new Date().toISOString();
-            user.date_created = new Date().toISOString()
-            data = await this.db.users.create(user);
+            data = this.db.users.create(user)
         } catch(err) {
-            // logger.error('Error::' + err);
             console.log('Error::' + err)
         }
         return data;

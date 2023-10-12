@@ -12,11 +12,15 @@ router.use(function timeLog(req, res, next) {
 router.use(bodyParser.json());
 
 router.get('/', (req, res) => {
-    userController.getUsers().then(data => res.json(data));
+    userController.getUsers().then(data => res.json(data))
 })
 
-router.post('/', authenticationMiddleware.validateSignUp, (req, res) => {
-    userController.createUser(req.body.user).then(data => res.json(data));
-})
+router.post('/', 
+    authenticationMiddleware.validateSignUp, 
+    authenticationMiddleware.hashPassword, 
+    (req, res) => {
+        userController.createUser(req.body.user).then(data => res.json(data))
+    }
+)
 
 module.exports = router
