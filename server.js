@@ -4,12 +4,14 @@ const app = express()
 const bodyParser = require('body-parser')
 const taskRouter = require('./src/route/task.route')
 const authRouter = require('./src/route/auth')
+const userRouter = require('./src/route/user')
 
 const apiBaseUrl = '/api'
 const port = process.env.PORT || 3000
 
 app.use(apiBaseUrl+'/tasks', taskRouter)
 app.use(apiBaseUrl+'/auth', authRouter)
+app.use(apiBaseUrl+'/users', userRouter)
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {

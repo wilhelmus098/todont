@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes, Model) => {
 
-class Users extends Model {}
+class User extends Model {}
 
-    Users.init({
+    User.init({
         email: {
             type: DataTypes.STRING,
             allowNull: false
@@ -26,10 +26,11 @@ class Users extends Model {}
         date_updated: {
             type: DataTypes.DATE
         },
+        
     }, {
         // Other model options go here
         sequelize, // We need to pass the connection instance
         modelName: 'users' // We need to choose the model name
     });
-    return Users;
+    return User;
 }

@@ -2,7 +2,6 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
 const logger = require('../src/logger/api.logger');
 
 const connect = () => {
-
     const hostName = process.env.HOST;
     const userName = process.env.USER;
     const password = process.env.PASSWORD;
@@ -25,7 +24,7 @@ const connect = () => {
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
     db.tasks = require("../src/model/task.model")(sequelize, DataTypes, Model);
-
+    db.users = require("../src/model/user")(sequelize, DataTypes, Model);
     return db;
 
 }

@@ -1,7 +1,6 @@
 const { connect } = require('../../config/db.config');
 const logger = require('../logger/api.logger');
 
-
 class TaskRepository {
 
     db = {};
