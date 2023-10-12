@@ -18,15 +18,7 @@ class User extends Model {}
         role: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        date_created: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        date_updated: {
-            type: DataTypes.DATE
-        },
-        
+        }
     }, {
         // Other model options go here
         sequelize, // We need to pass the connection instance

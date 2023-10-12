@@ -1,3 +1,4 @@
+const userValidationSchema = require('../validation/user')
 const jwt = require('jsonwebtoken')
 
 function verifyToken(req, res, next) {
@@ -44,4 +45,19 @@ function generateToken(req, res, next) {
     next()
 }
 
-module.exports = { verifyToken, generateToken }
+function validateSignUp(req, res, next) {
+    try {
+        userValidationSchema.newUserSchema.validateSync(req.body.user)
+        next()
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        })
+   }
+}
+
+function test(req, res, next) {
+    console.log('inites//////////////////////////////////////////////////////////////////////')
+}
+
+module.exports = { verifyToken, generateToken, validateSignUp, test }
