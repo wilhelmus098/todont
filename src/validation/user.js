@@ -7,4 +7,8 @@ let newUserSchema = yup.object().shape({
     role: yup.string().required()
 })
 
-module.exports = { newUserSchema }
+let userLoginSchema = yup.object().shape({
+    username: yup.string().min(5).max(10).required(),
+    password: yup.string().min(6).max(12).required(),
+})
+module.exports = { newUserSchema, userLoginSchema }

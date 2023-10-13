@@ -33,7 +33,14 @@ function verifyToken(req, res, next) {
 }
 
 async function generateToken(req, res, next) {
-    // 1.  GET USER BY USERNAME USING USER SERVICE
+    try {
+        userValidationSchema.userLoginSchema.validateSync(req.body)
+    } catch(err) {
+        res.status(401).json({
+            message: "(Validation error) : "+err.message
+        })
+    }
+
     const user1 = await userService.getUserByUsername(req.body.username)
     if (user1 === undefined || user1 == null) {
         res.status(401).json({
@@ -41,7 +48,6 @@ async function generateToken(req, res, next) {
         })
     }
 
-    // 2.  COMPARE BCRYPT HASH
     bcrypt.compare(req.body.password, user1.password, function(err, result) {
         if (err){
             res.status(401).json({
