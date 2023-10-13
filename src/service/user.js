@@ -1,7 +1,7 @@
 const userRepository  = require('../repository/user');
 
 class UserService {
-
+    
     constructor() {}
 
     async getUsers() {
@@ -10,6 +10,10 @@ class UserService {
 
     async createUser(user) {
         return await userRepository.createUser(user)
+    }
+
+    async getUserByUsername(username) {
+        return await userRepository.getUserByUsername(username)
     }
 }
 

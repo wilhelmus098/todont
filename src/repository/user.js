@@ -8,7 +8,7 @@ class UserRepository {
         this.db = connect();
         // For Development
         // this.db.sequelize.sync({ force: true }).then(() => {
-        //     console.log("Drop and re-sync dbaaaa");
+        //     console.log("Drop and re-sync dbaaaa")
         // });
     }
 
@@ -16,23 +16,34 @@ class UserRepository {
         try {
             const users = await this.db.users.findAll();
             console.log('users:::', users);
-            return users;
+            return users
         } catch (err) {
-            console.log(err);
-            return [];
+            console.log(err)
+            return []
         }
     }
 
     async createUser(user) {
-        let data = {};
+        let data = {}
         try {
             data = this.db.users.create(user)
         } catch(err) {
             console.log('Error::' + err)
         }
-        return data;
+        return data
     }
 
+    async getUserByUsername(username) {
+        try {
+            const userLogin = await this.db.users.findOne({
+                where: {username: username}
+            })
+            return userLogin
+        } catch (err) {
+            console.log(err)
+            return []
+        }
+    }
 }
 
 module.exports = new UserRepository();

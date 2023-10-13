@@ -4,12 +4,12 @@ const userController = require('../controller/user')
 const bodyParser = require('body-parser')
 const authenticationMiddleware = require('../middleware/authentication')
 
+router.use(bodyParser.json())
 //Middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now())
     next();
 })
-router.use(bodyParser.json());
 
 router.get('/', (req, res) => {
     userController.getUsers().then(data => res.json(data))
