@@ -11,7 +11,7 @@ function verifyToken(req, res, next) {
         const bearerToken = bearer[1]
         req.token = bearerToken
 
-        jwt.verify(req.token,'secret',(err,authData) => {
+        jwt.verify(req.token, process.env.TOKEN_SECRET, (err,authData) => {
             var test = Date.now()
             if (err instanceof jwt.TokenExpiredError) {
                 return res.status(401).send({ success: false, message: 'Unauthorized! Access Token was expired!' });
@@ -33,45 +33,51 @@ function verifyToken(req, res, next) {
 }
 
 async function generateToken(req, res, next) {
+    
     try {
-        userValidationSchema.userLoginSchema.validateSync(req.body)
+        // validate request body
+        await userValidationSchema.userLoginSchema.validate(req.body)
+
+        // get user by username
+        await userService.getUserByUsername(req.body.username).then((user) => {
+            if(user !== null) {
+
+                //compare plain password vs hashed password
+                bcrypt.compare(req.body.password, user.password, function(err, result) {
+                    if (err) {
+                        res.status(401).json({
+                            message: err.message
+                        })
+                    }
+                    if (result) {
+                        jwt.sign({ user }, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES_IN }, function(err, token) {
+                            if (err){
+                                res.status(401).json({
+                                    message: "(jwt.sign error: )"+err.message
+                                })
+                            } else {
+                                res.json({
+                                    token
+                                })
+                            }
+                        })
+                    } else {
+                        res.status(401).json({
+                            message: "Incorrect username or password"
+                        })
+                    }
+                })
+            } else {
+                res.status(401).json({
+                    message: "Username not found on db"
+                })
+            }
+        })
     } catch(err) {
         res.status(401).json({
             message: "(Validation error) : "+err.message
         })
     }
-
-    const user1 = await userService.getUserByUsername(req.body.username)
-    if (user1 === undefined || user1 == null) {
-        res.status(401).json({
-            message: "Incorrect username or password"
-        })
-    }
-
-    bcrypt.compare(req.body.password, user1.password, function(err, result) {
-        if (err){
-            res.status(401).json({
-                message: err.message
-            })
-        }
-        if (result) {
-            jwt.sign({ user1 }, 'secret', { expiresIn: 100 }, function(err, token) {
-                if (err){
-                    res.status(401).json({
-                        message: "(jwt.sign error: )"+err.message
-                    })
-                } else {
-                    res.json({
-                        token
-                    })
-                }
-            })
-        } else {
-            res.status(401).json({
-                message: "Incorrect username or password"
-            })
-        }
-    })
     next()
 }
 
