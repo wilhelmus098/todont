@@ -14,5 +14,9 @@ class UserController {
     async login(username) {
         return await userService.login(username)
     }
+
+    async updatePassword(user) {
+        return await userService.updatePassword(user)
+    }
 }
 module.exports = new UserController()

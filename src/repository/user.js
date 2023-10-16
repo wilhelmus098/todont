@@ -44,6 +44,32 @@ class UserRepository {
             return []
         }
     }
+
+    async updatePassword(user) {
+        let data = {}
+        try {
+            await this.db.users.findOne({
+                where: {email: user.email, username: user.username}
+            }).then(record => {
+                if(!record) {
+                    return {message: "not found"}
+                }
+
+                console.log(`retrieved record ${JSON.stringify(record,null,2)}`)
+                record.password = user.password
+                record.save()
+            })
+            // let existingUser = await this.db.users.findOne({
+            //     where: {email: user.email, username: user.username}
+            // }).then(function(updatedUser) {
+            //     existingUser.update(user)
+            // })
+            // data = this.db.users.create(user)
+        } catch(err) {
+            console.log('Error::' + err)
+        }
+        return data
+    }
 }
 
 module.exports = new UserRepository();

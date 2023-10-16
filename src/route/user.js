@@ -3,6 +3,7 @@ const router = express.Router()
 const userController = require('../controller/user')
 const bodyParser = require('body-parser')
 const authenticationMiddleware = require('../middleware/authentication')
+const userMiddleware = require('../middleware/user')
 
 router.use(bodyParser.json())
 //Middleware that is specific to this router
@@ -20,6 +21,14 @@ router.post('/',
     authenticationMiddleware.hashPassword, 
     (req, res) => {
         userController.createUser(req.body.user).then(data => res.json(data))
+    }
+)
+
+router.post('/updatepassword',
+    userMiddleware.validateUpdatePassword,
+    authenticationMiddleware.hashPassword,
+    (req, res) => {
+        userController.updatePassword(req.body.user).then(data => res.json(data))
     }
 )
 

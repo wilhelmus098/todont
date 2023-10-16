@@ -90,7 +90,7 @@ function validateSignUp(req, res, next) {
         res.status(400).json({
             message: err.message
         })
-   }
+    }
 }
 
 async function hashPassword(req, res, next) {

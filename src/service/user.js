@@ -15,6 +15,10 @@ class UserService {
     async getUserByUsername(username) {
         return await userRepository.getUserByUsername(username)
     }
+
+    async updatePassword(user) {
+        return await userRepository.updatePassword(user)
+    }
 }
 
 module.exports = new UserService();
